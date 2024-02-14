@@ -10,7 +10,7 @@
       console.log("scanning");
 			await ndef.scan();
 			ndef.onreading = (event) => {
-				info = event;
+				data = JSON.stringify(event);
 			};
 		}
 
