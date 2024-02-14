@@ -23,4 +23,4 @@
 </script>
 
 <p>Error: <span style="color: red;">{errorText}</span></p>
-<p>Info: <span>{errorText}</span></p>
+<p>Info: <span>{data}</span></p>
