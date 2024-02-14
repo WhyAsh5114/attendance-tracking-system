@@ -4,21 +4,21 @@
 	let errorText = '';
 	let data = '';
 	onMount(() => {
-		if ('NDEFReader' in window) {
-			const reader = new NDEFReader();
-
-			reader.addEventListener('reading', ({ message }) => {
-				for (const record of message.records) {
-					data = record.data;
-				}
+		const ndef = new NDEFReader();
+		ndef
+			.scan()
+			.then(() => {
+				data = 'Scan started successfully.';
+				ndef.onreadingerror = () => {
+					data = 'Cannot read data from the NFC tag. Try another one?';
+				};
+				ndef.onreading = (event) => {
+					data = `NDEF message read. ${event}`;
+				};
+			})
+			.catch((error) => {
+				error = `Error! Scan failed to start: ${error}.`;
 			});
-
-			reader.scan().catch((error) => {
-				errorText = 'Error reading NFC: ' + JSON.stringify(error);
-			});
-		} else {
-			errorText = 'Web NFC is not supported.';
-		}
 	});
 </script>
 
