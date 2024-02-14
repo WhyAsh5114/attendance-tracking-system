@@ -17,7 +17,7 @@
 				};
 			})
 			.catch((error) => {
-				error = `Error! Scan failed to start: ${error}.`;
+				errorText = `Error! Scan failed to start: ${error}.`;
 			});
 	});
 </script>
