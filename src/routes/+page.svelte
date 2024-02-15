@@ -1,7 +1,12 @@
 <script lang="ts">
-  export let data;
+	import TeacherView from './TeacherView.svelte';
+	import StudentView from './StudentView.svelte';
+
+	export let data;
 </script>
 
 {#if data.isTeacher}
-  <button class="btn btn-primary">Add class</button>
+	<TeacherView />
+{:else}
+	<StudentView />
 {/if}
