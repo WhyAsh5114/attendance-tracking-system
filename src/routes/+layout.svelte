@@ -5,7 +5,7 @@
 	import { page } from '$app/stores';
 </script>
 
-<div>
+<div class="h-screen w-screen flex flex-col">
 	<div class="navbar bg-base-100">
 		<div class="navbar-start">
 			<div class="dropdown">
@@ -37,6 +37,7 @@
 			{/if}
 		</div>
 	</div>
+	<main class="mx-auto w-full max-w-2xl h-px flex grow flex-col overflow-y-auto p-2">
+		<slot />
+	</main>
 </div>
-
-<slot />
