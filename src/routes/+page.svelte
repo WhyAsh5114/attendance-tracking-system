@@ -29,4 +29,6 @@
 	});
 </script>
 
-<Button>Click me</Button>
+<p>Error: <span style="color: red;">{errorText}</span></p>
+<p>Info: <span>{data}</span></p>
+<button id="scanButton">Scan</button>
