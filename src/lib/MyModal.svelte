@@ -1,13 +1,13 @@
 <script lang="ts">
   export let dialogElement: HTMLDialogElement;
   export let title: string;
-  export let titleColor = "text-accent";
+  export let titleColor = "text-primary";
   export let modalOnClose: () => void = () => {
     /* Don't do anything on close by default */
   };
 
   $: if (/success/i.test(title)) {
-    titleColor = "text-accent";
+    titleColor = "text-primary";
   } else if (/error/i.test(title) || /delete/i.test(title)) {
     titleColor = "text-error";
   } else if (/warning/i.test(title)) {

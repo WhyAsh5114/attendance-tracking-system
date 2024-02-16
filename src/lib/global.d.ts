@@ -24,3 +24,5 @@ type Lecture = {
 		presentStudents: string[];
 	};
 };
+
+type WithSID<T> = T & { _id: string };
