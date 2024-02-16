@@ -22,10 +22,18 @@
 		</thead>
 		<tbody>
 			{#each students as student}
-				<tr>
+				<tr class="bg-base-200">
 					<td>{student.rollNumber}</td>
 					<td>{student.name}</td>
-					<td>{lecture.attendanceSheets}</td>
+					<td class="flex flex-wrap">
+						{#each lecture.attendanceSheets as attendanceSheet}
+							{#if attendanceSheet.presentStudents.includes(student._id)}
+								<span class="text-accent">P</span>
+							{:else}
+								<span class="text-error">A</span>
+							{/if}
+						{/each}
+					</td>
 				</tr>
 			{/each}
 		</tbody>
