@@ -1,20 +1,19 @@
-/* Write your global styles here, in PostCSS syntax */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 h2 {
-  @apply text-2xl font-semibold mb-3;
+	@apply mb-3 text-2xl font-semibold;
 }
 
 h3 {
-  @apply text-lg font-semibold -mt-3 mb-3;
+	@apply -mt-3 mb-3 text-lg font-semibold;
 }
 
 .btn {
-  @apply disabled:text-opacity-60;
+	@apply disabled:text-opacity-60;
 }
 
 .btn-disabled {
-  @apply !text-opacity-60;
+	@apply !text-opacity-60;
 }
