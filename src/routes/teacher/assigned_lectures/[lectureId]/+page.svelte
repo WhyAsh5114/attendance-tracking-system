@@ -50,4 +50,5 @@
 	</div>
 {/if}
 
-<button class="btn btn-primary btn-block" on:click={takeAttendance}>Take attendance</button>
+<a class="btn btn-primary btn-block" href="/teacher/assigned_lectures/{lecture._id}/attendance_sheets">See attendance sheets</a>
+<button class="btn btn-primary btn-block mt-2" on:click={takeAttendance}>Take attendance</button>
