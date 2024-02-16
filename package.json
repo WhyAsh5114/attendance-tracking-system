@@ -36,11 +36,7 @@
 	"dependencies": {
 		"@auth/mongodb-adapter": "^2.4.0",
 		"@auth/sveltekit": "^0.11.0",
-		"clsx": "^2.1.0",
 		"dotenv": "^16.4.4",
-		"lucide-svelte": "^0.331.0",
-		"mongodb": "^6.3.0",
-		"tailwind-merge": "^2.2.1",
-		"tailwind-variants": "^0.2.0"
+		"mongodb": "^6.3.0"
 	}
 }
