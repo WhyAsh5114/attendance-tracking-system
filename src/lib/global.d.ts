@@ -7,12 +7,12 @@ type Student = {
 type Teacher = {
 	name: string;
 	email: string;
-	assignedClass: string | null;
 };
 
 type TeacherClass = {
 	name: string;
 	lectures: string[];
+	assignedTeacher: string;
 };
 
 type Lecture = {
