@@ -4,10 +4,10 @@ export const load = async ({ parent }) => {
 	const { session } = await parent();
 
 	const client = await clientPromise;
-	const teachers = await client
+	const teacher = await client
 		.db()
 		.collection('teachers')
 		.findOne({ emailId: session?.user?.email });
 
-	return { isTeacher: teachers !== null };
+	return { teacher: JSON.parse(JSON.stringify(teacher)) };
 };
