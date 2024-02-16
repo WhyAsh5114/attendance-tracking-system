@@ -1,4 +1,3 @@
-import { signIn } from '@auth/sveltekit/client';
 import { error } from '@sveltejs/kit';
 const unprotectedRoutes = ['/'];
 
