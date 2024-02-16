@@ -5,8 +5,8 @@
 	export let data;
 </script>
 
-{#if data.isTeacher}
-	<TeacherView />
+{#if data.teacher}
+	<TeacherView teacherClasses={data.teacher.classes} />
 {:else}
 	<StudentView />
 {/if}
