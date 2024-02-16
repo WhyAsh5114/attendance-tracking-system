@@ -67,6 +67,7 @@
 	{modalText}
 </MyModal>
 
+<h2>Add class</h2>
 <form id="class-form" class="my-auto" on:submit|preventDefault={submitClass}>
 	<label class="form-control w-full">
 		<div class="label">
