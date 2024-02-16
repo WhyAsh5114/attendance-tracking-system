@@ -5,7 +5,11 @@ export const load = async ({ parent }) => {
 	const { session } = await parent();
 
 	const client = await clientPromise;
-	const teacher = await client.db().collection('teachers').findOne({ email: session?.user?.email });
+	const teacher = await client
+		.db()
+		.collection<Teacher>('teachers')
+		.findOne({ email: session?.user?.email });
 
 	if (!teacher) return error(403, 'Not a teacher');
+	return { teacher: JSON.parse(JSON.stringify(teacher)) as WithSID<Teacher> };
 };
