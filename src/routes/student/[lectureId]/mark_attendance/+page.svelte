@@ -23,7 +23,6 @@
 			qrScannerOpened = true;
 			const stream = await navigator.mediaDevices.getUserMedia({ video: true });
 			video.srcObject = stream;
-			const cameras = await QrScanner.listCameras();
 
 			scanner = new QrScanner(
 				video,
@@ -39,9 +38,10 @@
 					maxScansPerSecond: 25
 				}
 			);
+
+			await scanner.start();
 			await scanner.setCamera($cameraId);
 
-			scanner.start();
 			setTimeout(() => {
 				scanner?.destroy();
 				attendanceCompleted = true;
