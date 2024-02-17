@@ -33,7 +33,7 @@
 				},
 				{
 					highlightScanRegion: true,
-					preferredCamera: (await QrScanner.listCameras())[0].id,
+					preferredCamera: (await QrScanner.listCameras())[1].id,
 					maxScansPerSecond: 25
 				}
 			);
