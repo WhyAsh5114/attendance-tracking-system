@@ -18,12 +18,9 @@
 		try {
 			const stream = await navigator.mediaDevices.getUserMedia({ video: true });
 			video.srcObject = stream;
-
 			scanner = new QrScanner(
 				video,
-				(result: { data: string }) => {
-					scannedText = result.data.slice(7);
-				},
+				(result: { data: string }) => (scannedText = result.data.slice(7)),
 				{ highlightScanRegion: true }
 			);
 
@@ -50,7 +47,6 @@
 	}
 
 	function reduceDuration() {
-		console.log(durationLeft);
 		if (durationLeft > 0) {
 			durationLeft -= 10;
 		}
@@ -65,7 +61,6 @@
 
 	// TODO: remove comment onMount(reduceDuration);
 	onMount(openQrScanner);
-	console.log(isMarkingAttendance.uuidToMatch)
 </script>
 
 <h2>Student</h2>
