@@ -3,8 +3,6 @@
 	import { page } from '$app/stores';
 	export let data;
 
-	let callingEndpoint = false;
-
 	async function startAttendance() {
 		const response = await fetch(`/api/lectures/${$page.params.lectureId}/changeIsMarking`, {
 			method: 'POST',
@@ -45,7 +43,7 @@
 </div>
 
 {#if !data.lecture.isMarkingAttendance}
-	<button class="btn btn-primary mt-2" disabled={callingEndpoint} on:submit={startAttendance}>
+	<button class="btn btn-primary mt-2" on:click={startAttendance}>
 		Start attendance
 	</button>
 {:else}

@@ -3,6 +3,7 @@ import { error } from '@sveltejs/kit';
 
 export const load = async ({ parent }) => {
 	const { session } = await parent();
+	if (!session?.user?.email) return error(403, 'No email');
 
 	const client = await clientPromise;
 	const teacher = await client

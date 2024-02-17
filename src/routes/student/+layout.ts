@@ -5,7 +5,7 @@ export const load = async ({ fetch, parent }) => {
 
 	let response = await fetch('/api/students');
 	const students = (await response.json()) as WithSID<Student>[];
-	const student = students.find((s) => s.email === session.user.email);
+	const student = students.find((s) => s.email === session?.user?.email);
 
 	if (!student) return error(403, 'Not a student');
 
