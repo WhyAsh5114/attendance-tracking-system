@@ -21,7 +21,7 @@
 	let qrCodeData = '';
 	let svg = '';
 
-	if (data.lecture.isMarkingAttendance) {
+	$: if (data.lecture.isMarkingAttendance) {
 		qrCodeData = data.lecture.isMarkingAttendance.uuidToMatch;
 		const qr = QRCode(0, 'M');
 		qr.addData(qrCodeData);
@@ -83,9 +83,12 @@
 	</table>
 </div>
 
+<div>{@html svg}</div>
+
 {#if !data.lecture.isMarkingAttendance}
 	<button class="btn btn-primary mt-2" on:click={startAttendance}> Start attendance </button>
-{:else}
+{:else if durationLeft > 0}
 	<span class="btn btn-primary mt-2">Attendance starts in: {Math.round(durationLeft / 10)}</span>
+	{:else}
+	<button class="btn btn-primary mt-2">Finish marking attendance</button>
 {/if}
-<div>{@html svg}</div>
