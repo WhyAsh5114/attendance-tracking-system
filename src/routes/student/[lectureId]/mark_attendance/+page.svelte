@@ -33,7 +33,7 @@
 				},
 				{
 					highlightScanRegion: true,
-					preferredCamera: 'environment',
+					preferredCamera: 'user',
 					maxScansPerSecond: 25
 				}
 			);
