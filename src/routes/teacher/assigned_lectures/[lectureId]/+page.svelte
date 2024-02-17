@@ -50,5 +50,16 @@
 	</div>
 {/if}
 
-<a class="btn btn-primary btn-block" href="/teacher/assigned_lectures/{lecture._id}/attendance_sheets">See attendance sheets</a>
-<button class="btn btn-primary btn-block mt-2" on:click={takeAttendance}>Take attendance</button>
+<a
+	class="btn btn-primary btn-block mt-2"
+	href="/teacher/assigned_lectures/{lecture._id}/attendance_sheets">See attendance sheets</a
+>
+<div class="join mt-2 grid grid-cols-2">
+	<a
+		class="btn btn-accent join-item"
+		href="/teacher/assigned_lectures/{lecture._id}/qr_based_attendance"
+	>
+		QR attendance
+	</a>
+	<button class="btn btn-primary join-item" on:click={takeAttendance}>Take attendance</button>
+</div>
