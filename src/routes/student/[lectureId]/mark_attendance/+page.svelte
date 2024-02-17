@@ -2,8 +2,6 @@
 	export let data;
 	const isMarkingAttendance = data.lecture.isMarkingAttendance as isMarkingAttendanceObject;
 	$: durationLeft = isMarkingAttendance.startTimestamp - Number(new Date());
-
-  console.log(isMarkingAttendance.startTimestamp);
 </script>
 
 <h2>Student</h2>
