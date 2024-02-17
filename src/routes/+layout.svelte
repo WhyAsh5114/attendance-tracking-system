@@ -3,7 +3,15 @@
 	import '../app.pcss';
 	import MenuIcon from 'virtual:icons/material-symbols/menu';
 	import { page } from '$app/stores';
+
+	//@ts-ignore
+	import { pwaInfo } from 'virtual:pwa-info';
+	$: webManifestLink = pwaInfo ? pwaInfo.webManifest.linkTag : '';
 </script>
+
+<svelte:head>
+	{@html webManifestLink}
+</svelte:head>
 
 <div class="flex h-screen w-screen flex-col">
 	<div class="navbar bg-base-100">
