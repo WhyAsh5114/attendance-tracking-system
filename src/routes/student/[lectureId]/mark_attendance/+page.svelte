@@ -38,7 +38,7 @@
 					maxScansPerSecond: 25
 				}
 			);
-			scanner.setCamera(cameras[1].id);
+			await scanner.setCamera(cameras[1].id);
 
 			scanner.start();
 			setTimeout(() => {
