@@ -21,7 +21,7 @@ export const POST = async ({ locals, params }) => {
 
 		const presentStudents = lectureDocument.isMarkingAttendance.studentStatuses
 			.filter((studentStatus) => {
-				studentStatus.status === 'present';
+				return studentStatus.status === 'present';
 			})
 			.map((studentStatus) => studentStatus.studentId);
 
