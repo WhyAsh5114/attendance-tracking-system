@@ -68,7 +68,11 @@
 		if (response.ok) await goto('/student');
 	}
 
-	onMount(reduceDuration);
+	let cameras: { id: string; label: string }[] = [];
+	onMount(async () => {
+		reduceDuration();
+		cameras = await QrScanner.listCameras();
+	});
 </script>
 
 <h2>Student</h2>
@@ -118,3 +122,8 @@
 		{/if}
 	</div>
 {/if}
+
+{#each cameras as camera}
+	<p>{camera.id}</p>
+	<p>{camera.label}</p>
+{/each}
