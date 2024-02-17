@@ -22,6 +22,7 @@
 		const response = await fetch(`/api/lectures/${data.lecture._id}/convertMarkingToSheet`, {
 			method: 'POST'
 		});
+		await invalidate('/api/lectures');
 		await goto(`/teacher/assigned_lectures/${data.lecture._id}`);
 	}
 
