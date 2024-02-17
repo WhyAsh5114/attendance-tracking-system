@@ -4,11 +4,11 @@
 	export let data;
 
 	async function changeStatusToReady() {
-		const response = await fetch('/api/lectures/${data.lecture._id}/changeStudentStatus', {
+		const response = await fetch(`/api/lectures/${data.lecture._id}/changeStudentStatus`, {
 			method: 'POST',
 			body: JSON.stringify({ studentId: data.student._id, status: 'ready' })
 		});
-		if (response.ok) await goto('/student/{data.lecture._id}/mark_attendance');
+		if (response.ok) await goto(`/student/${data.lecture._id}/mark_attendance`);
 	}
 </script>
 
