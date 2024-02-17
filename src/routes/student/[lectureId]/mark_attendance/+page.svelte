@@ -1,75 +1,71 @@
 <script lang="ts">
-	import { onMount, onDestroy } from 'svelte';
-	import QrScanner from 'qr-scanner'; 
+	import { onMount } from 'svelte';
+	import QrScanner from 'qr-scanner';
 
 	export let data;
 	const isMarkingAttendance = data.lecture.isMarkingAttendance as isMarkingAttendanceObject;
-	let durationLeft = Math.round((isMarkingAttendance.startTimestamp - Number(new Date())) / 100);
-	let buttonDisabled = true;
+	let durationLeft =
+		Math.round((isMarkingAttendance.startTimestamp - Number(new Date())) / 100) - 4500;
+	let validatedSuccessfully = false;
 
 	let isOffline = false;
+	let presentArray: (boolean | null)[] = [null, null, null, null];
 
 	let video: HTMLVideoElement;
 	let scanner: QrScanner | undefined;
-	let scannedText: string = 'None';
-	function openQrScanner() {
-		onMount(async () => {
-			try {
-				const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-				video.srcObject = stream;
+	let scannedText: string = 'No QR code detected';
+	async function openQrScanner() {
+		try {
+			const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+			video.srcObject = stream;
 
-				const scannerOptions = {};
+			scanner = new QrScanner(
+				video,
+				(result: { data: string }) => {
+					scannedText = result.data.slice(7);
+				},
+				{ highlightScanRegion: true }
+			);
 
-				scanner = new QrScanner(
-					video,
-					(result: any) => {
-						scannedText = result.data;
-					},
-					scannerOptions
-				);
-
-				if (scanner) {
-					const scanQRCode = () => {
-						scanner?.start();
-						setTimeout(() => {
-							scanner?.stop();
-							if (scannedText === 'None') {
-								scannedText = 'No QR code detected';
-							}
-						}, 2000);
-					};
-
-					scanQRCode();
-
-					setInterval(() => {
-						scanQRCode();
-					}, 10000);
-				}
-			} catch (error) {
-				console.error('Error accessing camera:', error);
-			}
-		});
-
-		onDestroy(() => {
 			if (scanner) {
-				scanner.stop();
+				const scanQRCode = () => {
+					scanner?.start();
+					setTimeout(() => {
+						let idx = presentArray.findIndex((e) => e === null);
+						presentArray[idx] = scannedText === isMarkingAttendance.uuidToMatch;
+						scanner?.stop();
+						scannedText = 'No QR code detected';
+					}, 2000);
+				};
+
+				scanQRCode();
+				const handler = setInterval(() => {
+					scanQRCode();
+				}, 3000);
+				setTimeout(() => clearInterval(handler), 12000);
 			}
-		});
+		} catch (error) {
+			console.error('Error accessing camera:', error);
+		}
 	}
 
 	function reduceDuration() {
+		console.log(durationLeft);
 		if (durationLeft > 0) {
-			durationLeft -= 1;
+			durationLeft -= 10;
 		}
 		isOffline = !navigator.onLine;
 		if (durationLeft === 0 && isOffline) {
-			buttonDisabled = false;
-			openQrScanner();
-		} else {
-			buttonDisabled = true;
+			validatedSuccessfully = true;
+		} else if (durationLeft < 0) {
+			validatedSuccessfully = false;
 		}
+		setTimeout(reduceDuration, 1000);
 	}
-	onMount(reduceDuration);
+
+	// TODO: remove comment onMount(reduceDuration);
+	onMount(openQrScanner);
+	console.log(isMarkingAttendance.uuidToMatch)
 </script>
 
 <h2>Student</h2>
@@ -84,10 +80,26 @@
 	</div>
 {/if}
 
-<button class="btn btn-primary" disabled={buttonDisabled}>
-	Starting attendance in: {Math.round(durationLeft / 10)}
-</button>
+{#if !scanner}
+	<button class="btn btn-primary" disabled={!validatedSuccessfully} on:click={openQrScanner}>
+		{#if !validatedSuccessfully}
+			Starting attendance in: {Math.round(durationLeft / 10)}
+		{:else}
+			You ran out of time, contact lecture in-charge
+		{/if}
+	</button>
+{/if}
 
 <div id="video-container">
 	<video bind:this={video} id="qr-video" autoplay muted playsinline></video>
 </div>
+<ul class="steps mt-2">
+	{#each presentArray as present}
+		<li
+			class="step"
+			class:step-primary={present === true}
+			class:step-error={present === false}
+		></li>
+	{/each}
+</ul>
+<span>{scannedText}</span>

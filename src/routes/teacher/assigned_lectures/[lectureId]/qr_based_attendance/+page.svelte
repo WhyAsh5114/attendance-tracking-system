@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { invalidate } from '$app/navigation';
 	import { page } from '$app/stores';
+	import { onMount } from 'svelte';
 	export let data;
 
 	async function startAttendance() {
@@ -14,6 +15,19 @@
 	const lectureStudents = data.lecture.students.map((lectureStudent) => {
 		return data.students.find((s) => lectureStudent === s._id);
 	});
+
+	const isMarkingAttendance = data.lecture.isMarkingAttendance;
+	let durationLeft = Math.round(
+		((isMarkingAttendance?.startTimestamp ?? 0) - Number(new Date())) / 100
+	);
+
+	function reduceDuration() {
+		durationLeft -= 1;
+		if (durationLeft > 0) {
+			setTimeout(reduceDuration, 100);
+		}
+	}
+	onMount(reduceDuration);
 </script>
 
 <h2>Teacher</h2>
@@ -30,11 +44,20 @@
 		</thead>
 		<tbody>
 			{#each lectureStudents as student}
+				{@const studentStatus = isMarkingAttendance?.studentStatuses.find(
+					(status) => status.studentId === student?._id
+				)}
 				<tr class="bg-base-200">
 					<td>{student?.rollNumber}</td>
 					<td>{student?.name}</td>
-					<td class="flex flex-wrap">
-						<span class="text-error"></span>
+					<td class="flex flex-wrap font-semibold">
+						{#if studentStatus?.status === 'ready'}
+							<span class="text-primary">Ready</span>
+						{:else if studentStatus?.status === 'present'}
+							<span class="text-accent">Present</span>
+						{:else}
+							<span class="text-error">Not ready</span>
+						{/if}
 					</td>
 				</tr>
 			{/each}
@@ -43,9 +66,7 @@
 </div>
 
 {#if !data.lecture.isMarkingAttendance}
-	<button class="btn btn-primary mt-2" on:click={startAttendance}>
-		Start attendance
-	</button>
+	<button class="btn btn-primary mt-2" on:click={startAttendance}> Start attendance </button>
 {:else}
-	<button></button>
+	<span class="btn btn-primary mt-2">Attendance starts in: {Math.round(durationLeft / 10)}</span>
 {/if}
