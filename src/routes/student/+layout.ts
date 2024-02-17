@@ -10,7 +10,8 @@ export const load = async ({ fetch, parent }) => {
 	if (!student) return error(403, 'Not a student');
 
 	response = await fetch('/api/lectures');
-	const lectures = (await response.json()) as WithSID<Lecture>[];
+	let lectures = (await response.json()) as WithSID<Lecture>[];
+	lectures = lectures.filter((l) => l.students.includes(student._id));
 
 	return { student, lectures };
 };
