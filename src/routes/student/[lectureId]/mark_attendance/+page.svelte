@@ -33,10 +33,11 @@
 				},
 				{
 					highlightScanRegion: true,
-					preferredCamera: 'user',
+					preferredCamera: (await QrScanner.listCameras())[0].id,
 					maxScansPerSecond: 25
 				}
 			);
+
 			scanner.start();
 			setTimeout(() => {
 				scanner?.destroy();
