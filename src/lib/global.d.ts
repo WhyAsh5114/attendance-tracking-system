@@ -19,7 +19,11 @@ type Lecture = {
 	name: string;
 	students: string[];
 	assignedTeacher: string;
-	isMarkingAttendance: boolean;
+	isMarkingAttendance: null | {
+		studentStatuses: { studentId: string; status: 'not ready' | 'ready' | 'present' }[];
+		startTimestamp: EpochTimeStamp;
+		uuidToMatch: string;
+	};
 	attendanceSheets: {
 		timestamp: EpochTimeStamp;
 		presentStudents: string[];
