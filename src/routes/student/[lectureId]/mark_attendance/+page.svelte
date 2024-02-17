@@ -22,6 +22,8 @@
 			qrScannerOpened = true;
 			const stream = await navigator.mediaDevices.getUserMedia({ video: true });
 			video.srcObject = stream;
+			const cameras = await QrScanner.listCameras();
+
 			scanner = new QrScanner(
 				video,
 				(result: { data: string }) => {
@@ -33,10 +35,10 @@
 				},
 				{
 					highlightScanRegion: true,
-					preferredCamera: (await QrScanner.listCameras())[1].id,
 					maxScansPerSecond: 25
 				}
 			);
+			scanner.setCamera(cameras[1].id);
 
 			scanner.start();
 			setTimeout(() => {
@@ -68,10 +70,8 @@
 		if (response.ok) await goto('/student');
 	}
 
-	let cameras: { id: string; label: string }[] = [];
 	onMount(async () => {
 		reduceDuration();
-		cameras = await QrScanner.listCameras();
 	});
 </script>
 
@@ -122,8 +122,3 @@
 		{/if}
 	</div>
 {/if}
-
-{#each cameras as camera}
-	<p>{camera.id}</p>
-	<p>{camera.label}</p>
-{/each}
