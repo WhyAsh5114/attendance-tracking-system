@@ -106,7 +106,7 @@
 			<video bind:this={video} id="qr-video" autoplay muted playsinline></video>
 		</div>
 		<span>{scannedText}</span>
-		<progress class="progress progress-primary w-56" value={scannedArray.length} max="100"
+		<progress class="progress progress-primary w-56" value={scannedArray.length} max="250"
 		></progress>
 	</div>
 {:else}
