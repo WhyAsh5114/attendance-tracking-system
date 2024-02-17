@@ -6,8 +6,7 @@
 	export let data;
 
 	const isMarkingAttendance = data.lecture.isMarkingAttendance as isMarkingAttendanceObject;
-	let durationLeft =
-		Math.round((isMarkingAttendance.startTimestamp - Number(new Date())) / 100);
+	let durationLeft = Math.round(isMarkingAttendance.startTimestamp - Number(new Date()));
 	let validatedSuccessfully = false;
 
 	let isOffline = false;
@@ -56,15 +55,15 @@
 	}
 
 	function reduceDuration() {
-		durationLeft -= 10;
+		durationLeft -= 100;
 		isOffline = !navigator.onLine;
-		if (durationLeft === 0 && isOffline) {
+		if (Math.floor(durationLeft / 100) === 0 && isOffline) {
 			validatedSuccessfully = true;
 			openQrScanner();
 		} else if (durationLeft < 0 && !isOffline) {
 			validatedSuccessfully = false;
 		}
-		setTimeout(reduceDuration, 1000);
+		setTimeout(reduceDuration, 100);
 	}
 
 	onMount(reduceDuration);
@@ -95,7 +94,7 @@
 		{/if}
 		<button class="btn btn-primary" disabled={!validatedSuccessfully} on:click={openQrScanner}>
 			{#if !validatedSuccessfully && durationLeft > 0}
-				Starting attendance in: {Math.round(durationLeft / 10)}
+				Starting attendance in: {Math.round(durationLeft / 1000)}
 			{:else}
 				You ran out of time, contact lecture in-charge
 			{/if}
