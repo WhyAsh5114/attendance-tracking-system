@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { invalidate } from '$app/navigation';
+	import { goto, invalidate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import QRCode from 'qrcode-generator';
@@ -16,6 +16,13 @@
 	async function updateMarkingAttendance() {
 		const response = await fetch(`/api/lectures/${data.lecture._id}`);
 		if (response.ok) data.lecture = await response.json();
+	}
+
+	async function finishMarkingAttendance() {
+		const response = await fetch(`/api/lectures/${data.lecture._id}/convertMarkingToSheet`, {
+			method: 'POST'
+		});
+		await goto(`/teacher/assigned_lectures/${data.lecture._id}`);
 	}
 
 	let qrCodeData = '';
@@ -42,10 +49,18 @@
 		durationLeft -= 1;
 		setTimeout(reduceDuration, 100);
 	}
+
 	onMount(() => {
 		reduceDuration();
 		setInterval(updateMarkingAttendance, 1000);
 	});
+
+	$: totalMarkedPresent = isMarkingAttendance?.studentStatuses.reduce(
+		(totalPresent, studentStatus) => {
+			return studentStatus.status === 'present' ? (totalPresent += 1) : totalPresent;
+		},
+		0
+	);
 </script>
 
 <h2>Teacher</h2>
@@ -57,7 +72,11 @@
 			<tr>
 				<th>Roll No</th>
 				<th>Name</th>
-				<th>Ready</th>
+				<th
+					>Status {#if isMarkingAttendance}
+						({totalMarkedPresent}/{isMarkingAttendance?.studentStatuses.length})
+					{/if}</th
+				>
 			</tr>
 		</thead>
 		<tbody>
@@ -89,6 +108,8 @@
 	<button class="btn btn-primary mt-2" on:click={startAttendance}> Start attendance </button>
 {:else if durationLeft > 0}
 	<span class="btn btn-primary mt-2">Attendance starts in: {Math.round(durationLeft / 10)}</span>
-	{:else}
-	<button class="btn btn-primary mt-2">Finish marking attendance</button>
+{:else}
+	<button class="btn btn-primary mt-2" on:click={finishMarkingAttendance}>
+		Finish marking attendance
+	</button>
 {/if}

@@ -55,11 +55,15 @@
 	</div>
 </MyModal>
 
-<div class="flex items-center gap-1 text-sm">
-	<span>Start date: </span>
-	<DateInput bind:value={startDate} format="dd-MM-yy" class="mr-auto" />
-	<span>End date: </span>
-	<DateInput bind:value={endDate} format="dd-MM-yy" min={startDate} dynamicPositioning />
+<div class="flex flex-col items-start justify-center gap-1 text-sm">
+	<div class="flex items-center">
+		<span class="basis-20 shrink-0">Start date: </span>
+		<DateInput bind:value={startDate} format="dd-MM-yy" />
+	</div>
+	<div class="flex items-center">
+		<span class="basis-20 shrink-0">End date: </span>
+		<DateInput bind:value={endDate} format="dd-MM-yy" min={startDate} />
+	</div>
 </div>
 <div class="flex h-px grow overflow-auto">
 	<table class="table h-fit">

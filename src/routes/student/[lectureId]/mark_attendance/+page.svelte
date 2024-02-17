@@ -69,7 +69,7 @@
 	async function syncAttendance() {
 		const response = await fetch(`/api/lectures/${data.lecture._id}/changeStudentStatus`, {
 			method: 'POST',
-			body: JSON.stringify({ studentId: data.student._id, status: 'ready' })
+			body: JSON.stringify({ studentId: data.student._id, status: 'present' })
 		});
 		if (response.ok) await goto('/student');
 	}
