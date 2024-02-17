@@ -10,45 +10,38 @@
 	let validatedSuccessfully = false;
 
 	let isOffline = false;
-	let presentArray: (boolean | null)[] = [null, null, null, null];
 	let attendanceCompleted = false;
 
 	let qrScannerOpened = false;
 	let video: HTMLVideoElement;
 	let scanner: QrScanner | undefined;
 	let scannedText: string = 'No QR code detected';
+	let scannedArray: string[] = [];
 	async function openQrScanner() {
 		try {
+			qrScannerOpened = true;
 			const stream = await navigator.mediaDevices.getUserMedia({ video: true });
 			video.srcObject = stream;
-			scanner = new QrScanner(video, (result: { data: string }) => (scannedText = result.data), {
-				highlightScanRegion: true
-			});
-
-			if (scanner) {
-				qrScannerOpened = true;
-				const scanQRCode = () => {
-					scanner?.start();
-					setTimeout(() => {
-						let idx = presentArray.findIndex((e) => e === null);
-						presentArray[idx] =
-							scannedText === isMarkingAttendance.uuidToMatch && validatedSuccessfully;
-						scanner?.stop();
-						scannedText = 'No QR code detected';
-					}, 2000);
-				};
-
-				scanQRCode();
-				const handler = setInterval(() => {
-					scanQRCode();
-				}, 3000);
-				setTimeout(() => {
-					clearInterval(handler);
-					presentArray = presentArray;
-					attendanceCompleted = true;
-					scanner?.destroy();
-				}, 12000);
-			}
+			scanner = new QrScanner(
+				video,
+				(result: { data: string }) => {
+					scannedText = result.data;
+					if (result.data === isMarkingAttendance.uuidToMatch) {
+						scannedArray.push(result.data);
+						scannedArray = scannedArray;
+					}
+				},
+				{
+					highlightScanRegion: true,
+					preferredCamera: 'environment',
+					maxScansPerSecond: 25
+				}
+			);
+			scanner.start();
+			setTimeout(() => {
+				scanner?.destroy();
+				attendanceCompleted = true;
+			}, 10000);
 		} catch (error) {
 			console.error('Error accessing camera:', error);
 		}
@@ -66,17 +59,15 @@
 		setTimeout(reduceDuration, 100);
 	}
 
-	onMount(reduceDuration);
-
-	$: totalSucceeded = presentArray.filter((e) => e === true).length;
-
 	async function syncAttendance() {
 		const response = await fetch(`/api/lectures/${data.lecture._id}/changeStudentStatus`, {
 			method: 'POST',
 			body: JSON.stringify({ studentId: data.student._id, status: 'ready' })
 		});
-		if (response.ok) goto('/student');
+		if (response.ok) await goto('/student');
 	}
+
+	onMount(reduceDuration);
 </script>
 
 <h2>Student</h2>
@@ -105,29 +96,23 @@
 		<div id="video-container">
 			<video bind:this={video} id="qr-video" autoplay muted playsinline></video>
 		</div>
-		<ul class="steps mt-2 w-full">
-			{#each presentArray as present}
-				<li
-					class="step"
-					class:step-primary={present === true}
-					class:step-error={present === false}
-				></li>
-			{/each}
-		</ul>
 		<span>{scannedText}</span>
+		<progress class="progress progress-primary w-56" value={scannedArray.length} max="100"
+		></progress>
 	</div>
 {:else}
 	<div class="flex grow flex-col items-center justify-center gap-4">
 		{#if isOffline}
 			<span class="text-center text-3xl font-bold text-primary">You can now go online!</span>
-			<span class="text-xl font-semibold">{totalSucceeded}/4 marked</span>
-			{#if totalSucceeded >= 3}
+			{#if scannedArray.length >= 50}
 				<span class="text-xl text-accent">Go online to sync your attendance</span>
 			{:else}
 				<span class="text-xl text-error">You've been marked absent</span>
 			{/if}
-		{:else if totalSucceeded >= 3}
-			<span class="text-xl">You'll be marked {totalSucceeded >= 3 ? 'present' : 'absent'}</span>
+		{:else if scannedArray.length >= 50}
+			<span class="text-xl"
+				>You'll be marked {scannedArray.length >= 50 ? 'present' : 'absent'}</span
+			>
 			<button class="btn btn-primary btn-block" on:click={syncAttendance}>Sync attendance</button>
 		{/if}
 	</div>
