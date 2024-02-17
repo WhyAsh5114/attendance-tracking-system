@@ -15,15 +15,17 @@ type TeacherClass = {
 	assignedTeacher: string;
 };
 
+type isMarkingAttendanceObject = {
+	studentStatuses: { studentId: string; status: 'not ready' | 'ready' | 'present' }[];
+	startTimestamp: EpochTimeStamp;
+	uuidToMatch: string;
+};
+
 type Lecture = {
 	name: string;
 	students: string[];
 	assignedTeacher: string;
-	isMarkingAttendance: null | {
-		studentStatuses: { studentId: string; status: 'not ready' | 'ready' | 'present' }[];
-		startTimestamp: EpochTimeStamp;
-		uuidToMatch: string;
-	};
+	isMarkingAttendance: null | isMarkingAttendanceObject;
 	attendanceSheets: {
 		timestamp: EpochTimeStamp;
 		presentStudents: string[];
