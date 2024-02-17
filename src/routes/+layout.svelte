@@ -32,9 +32,9 @@
 		</div>
 		<div class="navbar-center hidden lg:flex">
 			<ul class="menu menu-horizontal px-1">
-				<li><a href="/">Item 1</a></li>
-				<li><a href="/">Item 2</a></li>
-				<li><a href="/">Item 3</a></li>
+				<li><a href="/admin">Admin</a></li>
+				<li><a href="/teacher">Teacher</a></li>
+				<li><a href="/student">Student</a></li>
 			</ul>
 		</div>
 		<div class="navbar-end">
