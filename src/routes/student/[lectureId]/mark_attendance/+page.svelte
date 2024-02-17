@@ -70,7 +70,6 @@
 	onMount(reduceDuration);
 
 	$: totalSucceeded = presentArray.filter((e) => e === true).length;
-	console.log(isMarkingAttendance.uuidToMatch);
 
 	async function syncAttendance() {
 		const response = await fetch(`/api/lectures/${data.lecture._id}/changeStudentStatus`, {

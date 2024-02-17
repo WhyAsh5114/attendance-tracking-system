@@ -34,7 +34,7 @@
 	});
 
 	$: isMarkingAttendance = data.lecture.isMarkingAttendance;
-	let durationLeft = Math.round(
+	$: durationLeft = Math.round(
 		((isMarkingAttendance?.startTimestamp ?? 0) - Number(new Date())) / 100
 	);
 
