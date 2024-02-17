@@ -17,7 +17,7 @@
 				>
 					<li><a href="/admin">Admin</a></li>
 					<li><a href="/teacher">Teacher</a></li>
-					<li><a href="/">Student</a></li>
+					<li><a href="/student">Student</a></li>
 				</ul>
 			</div>
 			<a class="btn btn-ghost text-xl" href="/">TrackMate</a>
