@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import QrScanner from 'qr-scanner';
 	import { goto } from '$app/navigation';
+	import { cameraId } from '../cameraStore.js';
 
 	export let data;
 
@@ -23,7 +24,7 @@
 			const stream = await navigator.mediaDevices.getUserMedia({ video: true });
 			video.srcObject = stream;
 			const cameras = await QrScanner.listCameras();
-			
+
 			scanner = new QrScanner(
 				video,
 				(result: { data: string }) => {
@@ -38,7 +39,7 @@
 					maxScansPerSecond: 25
 				}
 			);
-			await scanner.setCamera(cameras[0].id);
+			await scanner.setCamera($cameraId);
 
 			scanner.start();
 			setTimeout(() => {
