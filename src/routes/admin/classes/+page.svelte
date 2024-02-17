@@ -90,14 +90,31 @@
 	Select a class teacher to be assigned to this class
 </MyModal>
 
-<div class="flex h-px grow flex-col gap-1">
-	{#each classes as teacherClass}
-		{@const classTeacher = teachers.find((t) => t._id === teacherClass.assignedTeacher)}
-		<div class="flex flex-col">
-			<span>{teacherClass.name}</span>
-			<span class="text-sm">{classTeacher?.name}</span>
-		</div>
-	{/each}
+<div class="mt-4 flex h-px grow overflow-auto">
+	<table class="table h-fit">
+		<thead class="bg-neutral">
+			<tr>
+				<th>Roll no</th>
+				<th>Name & email</th>
+				<th>Lectures</th>
+			</tr>
+		</thead>
+		<tbody>
+			{#each classes as teacherClass}
+				{@const classTeacher = teachers.find((t) => t._id === teacherClass.assignedTeacher)}
+				<tr class="bg-base-200">
+					<td class="whitespace-nowrap">{teacherClass.name}</td>
+					<td class="whitespace-nowrap">{classTeacher?.name}</td>
+					<td class="flex flex-wrap gap-1">
+						{#each teacherClass.lectures as lectureId}
+							{@const lecture = data.lectures.find((l) => l._id === lectureId)}
+							<span class="badge badge-primary">{lecture?.name}</span>
+						{/each}
+					</td>
+				</tr>
+			{/each}
+		</tbody>
+	</table>
 </div>
 
 <button

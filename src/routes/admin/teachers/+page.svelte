@@ -59,13 +59,24 @@
 	</form>
 </MyModal>
 
-<div class="flex h-px grow flex-col gap-1">
-	{#each teachers as teacher}
-		<div class="flex flex-col">
-			<span>{teacher.name}</span>
-			<span class="text-sm">{teacher.email}</span>
-		</div>
-	{/each}
+<div class="mt-4 flex h-px grow overflow-auto">
+	<table class="table h-fit">
+		<thead class="bg-neutral">
+			<tr>
+				<th>Name & email</th>
+			</tr>
+		</thead>
+		<tbody>
+			{#each teachers as teacher}
+				<tr class="bg-base-200">
+					<td class="flex flex-col whitespace-nowrap">
+						<span>{teacher.name}</span>
+						<span class="text-sm">{teacher.email}</span>
+					</td>
+				</tr>
+			{/each}
+		</tbody>
+	</table>
 </div>
 
 <button

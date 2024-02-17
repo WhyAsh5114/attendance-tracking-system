@@ -3,7 +3,8 @@
 	$: ({ student, lectures } = data);
 </script>
 
-<h2 class="text-center">Student</h2>
+<h2>Student</h2>
+<h3>Lectures</h3>
 
 <div class="flex h-px grow flex-col gap-2 overflow-y-auto">
 	{#each lectures as lecture}
