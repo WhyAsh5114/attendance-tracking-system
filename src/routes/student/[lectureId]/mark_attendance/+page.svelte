@@ -28,7 +28,10 @@
 				video,
 				(result: { data: string }) => {
 					scannedText = result.data;
-					if (result.data === isMarkingAttendance.uuidToMatch) {
+					if (
+						result.data === isMarkingAttendance.uuidToMatch &&
+						Number(new Date()) < isMarkingAttendance.startTimestamp + 1000 * 10
+					) {
 						scannedArray.push(result.data);
 						scannedArray = scannedArray;
 					}
