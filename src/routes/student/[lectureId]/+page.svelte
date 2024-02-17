@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
+	import { goto, invalidate } from '$app/navigation';
 
 	export let data;
 
@@ -8,6 +8,7 @@
 			method: 'POST',
 			body: JSON.stringify({ studentId: data.student._id, status: 'ready' })
 		});
+		await invalidate('/api/lectures');
 		if (response.ok) await goto(`/student/${data.lecture._id}/mark_attendance`);
 	}
 </script>
