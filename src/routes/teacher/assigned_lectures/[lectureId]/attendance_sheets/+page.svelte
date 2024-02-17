@@ -65,9 +65,9 @@
 		<DateInput bind:value={endDate} format="dd-MM-yy" min={startDate} />
 	</div>
 </div>
-<div class="flex h-px grow overflow-auto">
+<div class="flex h-px grow overflow-auto mt-4">
 	<table class="table h-fit">
-		<thead>
+		<thead class="bg-neutral">
 			<tr>
 				<th>Roll No</th>
 				<th>Name</th>
