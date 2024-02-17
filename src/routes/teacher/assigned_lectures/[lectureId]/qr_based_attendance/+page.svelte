@@ -13,6 +13,11 @@
 		await invalidate('/api/lectures');
 	}
 
+	async function updateMarkingAttendance() {
+		const response = await fetch(`/api/lectures/${data.lecture._id}`);
+		if (response.ok) data.lecture = await response.json();
+	}
+
 	let qrCodeData = '';
 	let svg = '';
 
@@ -28,18 +33,19 @@
 		return data.students.find((s) => lectureStudent === s._id);
 	});
 
-	const isMarkingAttendance = data.lecture.isMarkingAttendance;
+	$: isMarkingAttendance = data.lecture.isMarkingAttendance;
 	let durationLeft = Math.round(
 		((isMarkingAttendance?.startTimestamp ?? 0) - Number(new Date())) / 100
 	);
 
 	function reduceDuration() {
 		durationLeft -= 1;
-		if (durationLeft > 0) {
-			setTimeout(reduceDuration, 100);
-		}
+		setTimeout(reduceDuration, 100);
 	}
-	onMount(reduceDuration);
+	onMount(() => {
+		reduceDuration();
+		setInterval(updateMarkingAttendance, 1000);
+	});
 </script>
 
 <h2>Teacher</h2>

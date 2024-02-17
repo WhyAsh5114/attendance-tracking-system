@@ -6,11 +6,9 @@
 	export let data;
 
 	const isMarkingAttendance = data.lecture.isMarkingAttendance as isMarkingAttendanceObject;
-	// let durationLeft =
-	// 	Math.round((isMarkingAttendance.startTimestamp - Number(new Date())) / 100) + 50000;
+	let durationLeft =
+		Math.round((isMarkingAttendance.startTimestamp - Number(new Date())) / 100);
 	let validatedSuccessfully = false;
-
-	let durationLeft = 60;
 
 	let isOffline = false;
 	let presentArray: (boolean | null)[] = [null, null, null, null];
@@ -75,9 +73,9 @@
 	console.log(isMarkingAttendance.uuidToMatch);
 
 	async function syncAttendance() {
-		const response = await fetch(`/api/lectures/${data.lecture._id}/markStudentPresent`, {
+		const response = await fetch(`/api/lectures/${data.lecture._id}/changeStudentStatus`, {
 			method: 'POST',
-			body: JSON.stringify({ studentId: data.student._id, presence: totalSucceeded >= 3 })
+			body: JSON.stringify({ studentId: data.student._id, status: 'ready' })
 		});
 		if (response.ok) goto('/student');
 	}
@@ -123,10 +121,14 @@
 {:else}
 	<div class="flex grow flex-col items-center justify-center gap-4">
 		{#if isOffline}
-			<span class="text-center text-5xl font-bold text-primary">You can now go online!</span>
+			<span class="text-center text-3xl font-bold text-primary">You can now go online!</span>
 			<span class="text-xl font-semibold">{totalSucceeded}/4 marked</span>
-			<span class="text-xl">You'll be marked {totalSucceeded >= 3 ? 'present' : 'absent'}</span>
-		{:else}
+			{#if totalSucceeded >= 3}
+				<span class="text-xl text-accent">Go online to sync your attendance</span>
+			{:else}
+				<span class="text-xl text-error">You've been marked absent</span>
+			{/if}
+		{:else if totalSucceeded >= 3}
 			<span class="text-xl">You'll be marked {totalSucceeded >= 3 ? 'present' : 'absent'}</span>
 			<button class="btn btn-primary btn-block" on:click={syncAttendance}>Sync attendance</button>
 		{/if}

@@ -5,7 +5,8 @@ export const POST = async ({ request, locals, params }) => {
 	const session = await locals.auth();
 	if (!session) return new Response('Not logged in', { status: 403 });
 
-	const { studentId, presence }: { studentId: string; presence: boolean } = await request.json();
+	const { studentId, status }: { studentId: string; status: 'ready' | 'not ready' | 'present' } =
+		await request.json();
 	const lectureId = params.id;
 
 	try {
@@ -24,9 +25,7 @@ export const POST = async ({ request, locals, params }) => {
 			studentId: string;
 			status: 'not ready' | 'ready' | 'present';
 		};
-		statusDocument.status = 'present';
-
-		console.log(lectureDocument);
+		statusDocument.status = status;
 
 		await client
 			.db()
