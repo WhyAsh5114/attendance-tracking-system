@@ -23,7 +23,7 @@
 			const stream = await navigator.mediaDevices.getUserMedia({ video: true });
 			video.srcObject = stream;
 			const cameras = await QrScanner.listCameras();
-
+			
 			scanner = new QrScanner(
 				video,
 				(result: { data: string }) => {
@@ -38,7 +38,7 @@
 					maxScansPerSecond: 25
 				}
 			);
-			await scanner.setCamera(cameras[1].id);
+			await scanner.setCamera(cameras[0].id);
 
 			scanner.start();
 			setTimeout(() => {
