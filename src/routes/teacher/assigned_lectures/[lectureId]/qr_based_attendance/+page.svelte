@@ -2,6 +2,7 @@
 	import { invalidate } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
+	import QRCode from 'qrcode-generator';
 	export let data;
 
 	async function startAttendance() {
@@ -10,6 +11,17 @@
 			body: JSON.stringify(true)
 		});
 		await invalidate('/api/lectures');
+	}
+
+	let qrCodeData = '';
+	let svg = '';
+
+	if (data.lecture.isMarkingAttendance) {
+		qrCodeData = data.lecture.isMarkingAttendance.uuidToMatch;
+		const qr = QRCode(0, 'M');
+		qr.addData(qrCodeData);
+		qr.make();
+		svg = qr.createSvgTag({ scalable: true });
 	}
 
 	const lectureStudents = data.lecture.students.map((lectureStudent) => {
@@ -70,3 +82,4 @@
 {:else}
 	<span class="btn btn-primary mt-2">Attendance starts in: {Math.round(durationLeft / 10)}</span>
 {/if}
+<div>{@html svg}</div>

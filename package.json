@@ -39,6 +39,7 @@
 		"date-picker-svelte": "^2.10.1",
 		"dotenv": "^16.4.4",
 		"mongodb": "^6.3.0",
-		"qr-scanner": "^1.4.2"
+		"qr-scanner": "^1.4.2",
+		"qrcode-generator": "^1.4.4"
 	}
 }

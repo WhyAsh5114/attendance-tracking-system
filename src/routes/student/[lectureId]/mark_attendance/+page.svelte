@@ -4,6 +4,7 @@
 	import { goto } from '$app/navigation';
 
 	export let data;
+
 	const isMarkingAttendance = data.lecture.isMarkingAttendance as isMarkingAttendanceObject;
 	// let durationLeft =
 	// 	Math.round((isMarkingAttendance.startTimestamp - Number(new Date())) / 100) + 50000;
