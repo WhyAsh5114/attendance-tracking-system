@@ -17,15 +17,12 @@ export const POST = async ({ locals, params }) => {
 		if (!lectureDocument?.isMarkingAttendance)
 			return new Response('Lecture not found', { status: 404 });
 
-		console.log(lectureDocument.isMarkingAttendance.studentStatuses);
 
 		const presentStudents = lectureDocument.isMarkingAttendance.studentStatuses
 			.filter((studentStatus) => {
 				return studentStatus.status === 'present';
 			})
 			.map((studentStatus) => studentStatus.studentId);
-
-		console.log(presentStudents);
 
 		const attendanceSheet: Lecture['attendanceSheets'][number] = {
 			timestamp: lectureDocument.isMarkingAttendance.startTimestamp,
