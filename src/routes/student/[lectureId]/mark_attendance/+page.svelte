@@ -121,7 +121,7 @@
 			<video bind:this={video} id="qr-video" autoplay muted playsinline></video>
 		</div>
 		<progress
-			class="progress progress-primary mt-2 w-full px-2"
+			class="progress progress-primary mt-2 w-full mx-2"
 			value={scannedArray.length}
 			max="250"
 		></progress>
@@ -131,7 +131,7 @@
 		{#if isOffline}
 			<span class="text-center text-3xl font-bold text-primary">You can now go online!</span>
 			{#if scannedArray.length >= 100}
-				<span class="text-xl text-accent">Go online to sync your attendance</span>
+				<span class="text-xl text-accent">Go online to add your attendance</span>
 			{:else}
 				<span class="text-xl text-error">You've been marked absent</span>
 			{/if}
@@ -143,6 +143,3 @@
 		{/if}
 	</div>
 {/if}
-
-<progress class="progress progress-primary mt-2 w-full px-2" value={scannedArray.length} max="250"
-></progress>
