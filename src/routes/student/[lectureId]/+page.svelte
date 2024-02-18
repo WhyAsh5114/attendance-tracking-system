@@ -2,14 +2,19 @@
 	import { goto, invalidate } from '$app/navigation';
 	export let data;
 
+	let callingEndpoint = false;
+
 	async function changeStatusToReady() {
+		callingEndpoint = true;
 		const response = await fetch(`/api/lectures/${data.lecture._id}/changeStudentStatus`, {
 			method: 'POST',
 			body: JSON.stringify({ studentId: data.student._id, status: 'ready' })
 		});
 		await invalidate('/api/lectures');
 		if (response.ok) await goto(`/student/${data.lecture._id}/mark_attendance`);
+		callingEndpoint = false;
 	}
+
 	const presences = data.lecture.attendanceSheets.reduce((initialValue, sheet) => {
 		const student = sheet.presentStudents.find((s) => s === data.student._id);
 		return student ? initialValue + 1 : initialValue;
@@ -54,7 +59,7 @@
 					<td
 						>{new Date(attendanceSheet.timestamp).toLocaleString('en-US', {
 							weekday: 'short',
-							year: 'numeric',
+							year: '2-digit',
 							month: 'short',
 							day: 'numeric',
 							hour: 'numeric',
@@ -73,5 +78,11 @@
 </div>
 
 {#if data.lecture.isMarkingAttendance !== null}
-	<button class="btn btn-primary mt-2" on:click={changeStatusToReady}> Mark attendance </button>
+	<button class="btn btn-primary mt-2" on:click={changeStatusToReady} disabled={callingEndpoint}>
+		{#if !callingEndpoint}
+			Mark attendance
+		{:else}
+			<span class="loading loading-spinner"></span>
+		{/if}
+	</button>
 {/if}
