@@ -24,7 +24,7 @@
 
 <div class="stats bg-base-200">
 	<div class="stat">
-		<div class="stat-title">Presence percentage</div>
+		<div class="stat-title">Attendance percentage</div>
 		<div class="stat-value">
 			{attendancePercentage}%
 		</div>
