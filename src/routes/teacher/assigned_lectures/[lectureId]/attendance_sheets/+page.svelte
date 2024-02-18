@@ -57,15 +57,15 @@
 
 <div class="flex flex-col items-start justify-center gap-1 text-sm">
 	<div class="flex items-center">
-		<span class="basis-20 shrink-0">Start date: </span>
+		<span class="shrink-0 basis-20">Start date: </span>
 		<DateInput bind:value={startDate} format="dd-MM-yy" />
 	</div>
 	<div class="flex items-center">
-		<span class="basis-20 shrink-0">End date: </span>
+		<span class="shrink-0 basis-20">End date: </span>
 		<DateInput bind:value={endDate} format="dd-MM-yy" min={startDate} />
 	</div>
 </div>
-<div class="flex h-px grow overflow-auto mt-4">
+<div class="mt-4 flex h-px grow overflow-auto">
 	<table class="table h-fit">
 		<thead class="bg-neutral">
 			<tr>
@@ -76,17 +76,15 @@
 		</thead>
 		<tbody>
 			{#each students as student}
+				{@const present = attendanceSheets.filter((sheet) =>
+					sheet.presentStudents.includes(student._id)
+				).length}
+
 				<tr class="bg-base-200">
 					<td>{student.rollNumber}</td>
 					<td>{student.name}</td>
-					<td class="flex flex-wrap">
-						{#each attendanceSheets as attendanceSheet}
-							{#if attendanceSheet.presentStudents.includes(student._id)}
-								<span class="text-accent">P</span>
-							{:else}
-								<span class="text-error">A</span>
-							{/if}
-						{/each}
+					<td>
+						{present}/{attendanceSheets.length}
 					</td>
 				</tr>
 			{/each}
