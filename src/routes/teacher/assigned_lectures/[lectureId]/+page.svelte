@@ -33,22 +33,33 @@
 	{modalText}
 </MyModal>
 
-{#if lecture}
-	<div class="flex h-px grow flex-col gap-1 overflow-y-auto">
-		{#each students as student}
-			<div class="flex items-end gap-1">
-				<span class="mr-2 text-sm">{student.rollNumber}</span>
-				<span>{student.name}</span>
-				<input
-					type="checkbox"
-					id="{student.rollNumber.toString()}-present"
-					class="checkbox ml-auto"
-					bind:checked={student.present}
-				/>
-			</div>
-		{/each}
-	</div>
-{/if}
+<div class="mt-4 flex h-px grow overflow-auto">
+	<table class="table h-fit">
+		<thead class="bg-neutral">
+			<tr>
+				<th>Roll no</th>
+				<th>Name</th>
+				<th>Attendance</th>
+			</tr>
+		</thead>
+		<tbody>
+			{#each students as student}
+				<tr class="bg-base-200">
+					<td>{student.rollNumber}</td>
+					<td> {student.name} </td>
+					<td
+						><input
+							type="checkbox"
+							id="{student.rollNumber.toString()}-present"
+							class="checkbox ml-auto"
+							bind:checked={student.present}
+						/></td
+					>
+				</tr>
+			{/each}
+		</tbody>
+	</table>
+</div>
 
 <a
 	class="btn btn-primary btn-block mt-2"

@@ -101,7 +101,7 @@
 				<option value={camera.id}>{camera.label}</option>
 			{/each}
 		</select>
-		<button class="btn btn-primary" disabled={!validatedSuccessfully} on:click={openQrScanner}>
+		<button class="btn btn-primary mt-2" disabled={!validatedSuccessfully} on:click={openQrScanner}>
 			{#if !validatedSuccessfully && durationLeft > 0}
 				Starting attendance in: {Math.round(durationLeft / 1000)}
 			{:else}
@@ -114,8 +114,10 @@
 		<div id="video-container">
 			<video bind:this={video} id="qr-video" autoplay muted playsinline></video>
 		</div>
-		<span>{scannedText}</span>
-		<progress class="progress progress-primary w-56" value={scannedArray.length} max="250"
+		<progress
+			class="progress progress-primary mt-2 w-full px-2"
+			value={scannedArray.length}
+			max="250"
 		></progress>
 	</div>
 {:else}
@@ -135,3 +137,6 @@
 		{/if}
 	</div>
 {/if}
+
+<progress class="progress progress-primary mt-2 w-full px-2" value={scannedArray.length} max="250"
+></progress>
