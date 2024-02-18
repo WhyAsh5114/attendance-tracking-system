@@ -5,5 +5,8 @@ export const load = async ({ fetch }) => {
 	response = await fetch('/api/teachers');
 	const teachers: WithSID<Teacher>[] = await response.json();
 
-	return { teachers, classes };
+	response = await fetch('/api/lectures');
+	const lectures: WithSID<Lecture>[] = await response.json();
+
+	return { teachers, classes, lectures };
 };

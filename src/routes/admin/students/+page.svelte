@@ -74,16 +74,26 @@
 	</form>
 </MyModal>
 
-<div class="flex h-px grow flex-col gap-1">
-	{#each students as student}
-		<div class="flex">
-			<span class="basis-1/5 shrink-0">{student.rollNumber}</span>
-			<div class="flex flex-col">
-				<span>{student.name}</span>
-				<span class="text-sm">{student.email}</span>
-			</div>
-		</div>
-	{/each}
+<div class="mt-4 flex h-px grow overflow-auto">
+	<table class="table h-fit">
+		<thead class="bg-neutral">
+			<tr>
+				<th>Roll no</th>
+				<th>Name & email</th>
+			</tr>
+		</thead>
+		<tbody>
+			{#each students as student}
+				<tr class="bg-base-200">
+					<td>{student.rollNumber}</td>
+					<td class="flex flex-col whitespace-nowrap">
+						<span>{student.name}</span>
+						<span class="text-sm">{student.email}</span>
+					</td>
+				</tr>
+			{/each}
+		</tbody>
+	</table>
 </div>
 
 <button

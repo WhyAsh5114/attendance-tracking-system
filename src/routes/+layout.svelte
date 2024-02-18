@@ -3,7 +3,15 @@
 	import '../app.pcss';
 	import MenuIcon from 'virtual:icons/material-symbols/menu';
 	import { page } from '$app/stores';
+
+	//@ts-ignore
+	import { pwaInfo } from 'virtual:pwa-info';
+	$: webManifestLink = pwaInfo ? pwaInfo.webManifest.linkTag : '';
 </script>
+
+<svelte:head>
+	{@html webManifestLink}
+</svelte:head>
 
 <div class="flex h-screen w-screen flex-col">
 	<div class="navbar bg-base-100">
@@ -17,16 +25,16 @@
 				>
 					<li><a href="/admin">Admin</a></li>
 					<li><a href="/teacher">Teacher</a></li>
-					<li><a href="/">Student</a></li>
+					<li><a href="/student">Student</a></li>
 				</ul>
 			</div>
 			<a class="btn btn-ghost text-xl" href="/">TrackMate</a>
 		</div>
 		<div class="navbar-center hidden lg:flex">
 			<ul class="menu menu-horizontal px-1">
-				<li><a href="/">Item 1</a></li>
-				<li><a href="/">Item 2</a></li>
-				<li><a href="/">Item 3</a></li>
+				<li><a href="/admin">Admin</a></li>
+				<li><a href="/teacher">Teacher</a></li>
+				<li><a href="/student">Student</a></li>
 			</ul>
 		</div>
 		<div class="navbar-end">

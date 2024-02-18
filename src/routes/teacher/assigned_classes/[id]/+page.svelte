@@ -30,7 +30,8 @@
 			name: lectureName,
 			assignedTeacher: selectedTeacherId,
 			students: studentsInLecture,
-			attendanceSheets: []
+			attendanceSheets: [],
+			isMarkingAttendance: null
 		};
 		const response = await fetch('/api/lectures', {
 			method: 'POST',
