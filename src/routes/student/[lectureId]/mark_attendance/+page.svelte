@@ -93,7 +93,13 @@
 		{:else}
 			<div class="flex grow flex-col items-center justify-center">
 				<span class="text-5xl font-bold text-primary">You're offline!</span>
-				<span class="text-lg font-semibold">Attendance begins soon</span>
+				<span class="text-lg font-semibold">
+					{#if durationLeft > 0}
+						Attendance begins soon
+					{:else}
+						You missed the deadline, contact lecturer
+					{/if}
+				</span>
 			</div>
 		{/if}
 		<select id="camera-select" class="select select-bordered" bind:value={selectedCameraId}>
@@ -105,7 +111,7 @@
 			{#if !validatedSuccessfully && durationLeft > 0}
 				Starting attendance in: {Math.round(durationLeft / 1000)}
 			{:else}
-				You ran out of time, contact lecture in-charge
+				Deadline missed
 			{/if}
 		</button>
 	{/if}
