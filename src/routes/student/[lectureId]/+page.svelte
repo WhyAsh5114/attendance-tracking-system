@@ -10,11 +10,33 @@
 		await invalidate('/api/lectures');
 		if (response.ok) await goto(`/student/${data.lecture._id}/mark_attendance`);
 	}
+	const presences = data.lecture.attendanceSheets.reduce((initialValue, sheet) => {
+		const student = sheet.presentStudents.find((s) => s === data.student._id);
+		return student ? initialValue + 1 : initialValue;
+	}, 0);
+	const attendancePercentage = ((presences / data.lecture.attendanceSheets.length) * 100).toFixed(
+		2
+	);
 </script>
 
 <h2>Student</h2>
 <h3>Lecture {data.lecture.name}</h3>
 
+<div class="stats bg-base-200">
+	<div class="stat">
+		<div class="stat-title">Presence percentage</div>
+		<div class="stat-value">
+			{attendancePercentage}%
+		</div>
+		<div class="stat-desc">
+			{#if Math.floor(parseFloat(attendancePercentage)) < 75}
+				<span class="text-error">Defaulter</span>
+			{:else}
+				<span class="text-primary">Not defaulter</span>
+			{/if}
+		</div>
+	</div>
+</div>
 <div class="mt-4 flex h-px grow overflow-auto">
 	<table class="table h-fit">
 		<thead class="bg-neutral">
