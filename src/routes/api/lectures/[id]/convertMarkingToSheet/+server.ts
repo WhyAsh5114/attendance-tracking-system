@@ -1,11 +1,12 @@
 import clientPromise from '$lib/mongo/mongodb.js';
 import { ObjectId } from 'mongodb';
 
-export const POST = async ({ locals, params }) => {
+export const POST = async ({ locals, params, request }) => {
 	const session = await locals.auth();
 	if (!session) return new Response('Not logged in', { status: 403 });
 
 	const lectureId = params.id;
+	const manualPresentStudents: string[] = await request.json();
 
 	try {
 		const client = await clientPromise;
@@ -17,10 +18,12 @@ export const POST = async ({ locals, params }) => {
 		if (!lectureDocument?.isMarkingAttendance)
 			return new Response('Lecture not found', { status: 404 });
 
-
 		const presentStudents = lectureDocument.isMarkingAttendance.studentStatuses
 			.filter((studentStatus) => {
-				return studentStatus.status === 'present';
+				return (
+					studentStatus.status === 'present' ||
+					manualPresentStudents.includes(studentStatus.studentId)
+				);
 			})
 			.map((studentStatus) => studentStatus.studentId);
 

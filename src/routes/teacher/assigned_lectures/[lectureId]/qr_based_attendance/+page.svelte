@@ -3,7 +3,10 @@
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
 	import QRCode from 'qrcode-generator';
+	import CloseIcon from 'virtual:icons/material-symbols/close';
 	export let data;
+
+	let manualPresentStudents: string[] = [];
 
 	async function startAttendance() {
 		const response = await fetch(`/api/lectures/${$page.params.lectureId}/changeIsMarking`, {
@@ -20,7 +23,8 @@
 
 	async function finishMarkingAttendance() {
 		const response = await fetch(`/api/lectures/${data.lecture._id}/convertMarkingToSheet`, {
-			method: 'POST'
+			method: 'POST',
+			body: JSON.stringify(manualPresentStudents)
 		});
 		await invalidate('/api/lectures');
 		await goto(`/teacher/assigned_lectures/${data.lecture._id}`);
@@ -28,8 +32,9 @@
 
 	let qrCodeData = '';
 	let svg = '';
+	let qrClosed = false;
 
-	$: if (data.lecture.isMarkingAttendance) {
+	$: if (data.lecture.isMarkingAttendance && !qrClosed) {
 		qrCodeData = data.lecture.isMarkingAttendance.uuidToMatch;
 		const qr = QRCode(0, 'M');
 		qr.addData(qrCodeData);
@@ -38,7 +43,7 @@
 	}
 
 	const lectureStudents = data.lecture.students.map((lectureStudent) => {
-		return data.students.find((s) => lectureStudent === s._id);
+		return data.students.find((s) => lectureStudent === s._id) as WithSID<Student>;
 	});
 
 	$: isMarkingAttendance = data.lecture.isMarkingAttendance;
@@ -62,10 +67,27 @@
 		},
 		0
 	);
+
+	function updateManualAttendance(
+		e: Event & {
+			currentTarget: EventTarget & HTMLInputElement;
+		},
+		studentId: string
+	) {
+		if (e.currentTarget.checked) {
+			manualPresentStudents.push(studentId);
+		} else {
+			1;
+			const idx = manualPresentStudents.findIndex((e) => e === studentId);
+			if (idx !== 1) {
+				manualPresentStudents.splice(idx, 1);
+			}
+		}
+	}
 </script>
 
 <h2>Teacher</h2>
-<h3>QR based attendance</h3>
+<h3>QR based attendance for {data.lecture.name}</h3>
 
 <div class="flex h-px grow overflow-auto">
 	<table class="table h-fit">
@@ -78,6 +100,7 @@
 						({totalMarkedPresent}/{isMarkingAttendance?.studentStatuses.length})
 					{/if}</th
 				>
+				<th>Manual</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -97,13 +120,31 @@
 							<span class="text-error">Not ready</span>
 						{/if}
 					</td>
+					<td>
+						<input
+							type="checkbox"
+							class="checkbox"
+							on:change={(e) => updateManualAttendance(e, student?._id)}
+						/>
+					</td>
 				</tr>
 			{/each}
 		</tbody>
 	</table>
 </div>
 
-<div>{@html svg}</div>
+{#if svg}
+	<button
+		class="btn btn-error my-2 ml-auto"
+		on:click={() => {
+			svg = '';
+			qrClosed = true;
+		}}
+	>
+		Close QR <CloseIcon class="h-6 w-6" />
+	</button>
+	<div>{@html svg}</div>
+{/if}
 
 {#if !data.lecture.isMarkingAttendance}
 	<button class="btn btn-primary mt-2" on:click={startAttendance}> Start attendance </button>
