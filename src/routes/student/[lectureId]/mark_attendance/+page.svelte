@@ -48,7 +48,7 @@
 			setTimeout(() => {
 				scanner?.destroy();
 				attendanceCompleted = true;
-			}, 10000);
+			}, 15000);
 		} catch (error) {
 			console.error('Error accessing camera:', error);
 		}
