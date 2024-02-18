@@ -6,7 +6,7 @@
 	export let data;
 
 	const isMarkingAttendance = data.lecture.isMarkingAttendance as isMarkingAttendanceObject;
-	let durationLeft = Math.round(isMarkingAttendance.startTimestamp - Number(new Date()));
+	let durationLeft = Math.round(isMarkingAttendance.startTimestamp - Number(new Date())) - 5000;
 	let validatedSuccessfully = false;
 
 	let isOffline = false;
