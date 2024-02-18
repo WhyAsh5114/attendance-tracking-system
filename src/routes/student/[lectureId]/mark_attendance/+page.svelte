@@ -122,14 +122,14 @@
 	<div class="flex grow flex-col items-center justify-center gap-4">
 		{#if isOffline}
 			<span class="text-center text-3xl font-bold text-primary">You can now go online!</span>
-			{#if scannedArray.length >= 50}
+			{#if scannedArray.length >= 100}
 				<span class="text-xl text-accent">Go online to sync your attendance</span>
 			{:else}
 				<span class="text-xl text-error">You've been marked absent</span>
 			{/if}
-		{:else if scannedArray.length >= 50}
+		{:else if scannedArray.length >= 100}
 			<span class="text-xl"
-				>You'll be marked {scannedArray.length >= 50 ? 'present' : 'absent'}</span
+				>You'll be marked {scannedArray.length >= 100 ? 'present' : 'absent'}</span
 			>
 			<button class="btn btn-primary btn-block" on:click={syncAttendance}>Sync attendance</button>
 		{/if}
