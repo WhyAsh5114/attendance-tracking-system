@@ -2,7 +2,6 @@
 	import { onMount } from 'svelte';
 	import QrScanner from 'qr-scanner';
 	import { goto } from '$app/navigation';
-	import { cameraId } from '../cameraStore.js';
 
 	export let data;
 
@@ -43,7 +42,7 @@
 			);
 
 			await scanner.start();
-			await scanner.setCamera($cameraId);
+			await scanner.setCamera(selectedCameraId);
 
 			setTimeout(() => {
 				scanner?.destroy();
@@ -74,8 +73,13 @@
 		if (response.ok) await goto('/student');
 	}
 
+	let cameras: { id: string; label: string }[] = [];
+	let selectedCameraId: string;
+
 	onMount(async () => {
 		reduceDuration();
+		cameras = await QrScanner.listCameras(true);
+		selectedCameraId = cameras[0].id;
 	});
 </script>
 
@@ -92,6 +96,11 @@
 				<span class="text-lg font-semibold">Attendance begins soon</span>
 			</div>
 		{/if}
+		<select id="camera-select" class="select select-bordered" bind:value={selectedCameraId}>
+			{#each cameras as camera}
+				<option value={camera.id}>{camera.label}</option>
+			{/each}
+		</select>
 		<button class="btn btn-primary" disabled={!validatedSuccessfully} on:click={openQrScanner}>
 			{#if !validatedSuccessfully && durationLeft > 0}
 				Starting attendance in: {Math.round(durationLeft / 1000)}
