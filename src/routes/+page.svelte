@@ -14,7 +14,7 @@
 	<br />
 	<br />
 
-	<div class="card card-compact mx-auto w-96 bg-secondary text-black">
+	<div class="card card-compact mx-auto w-96 bg-primary text-black">
 		<figure><img src="/location.jpg" alt="Shoes" /></figure>
 		<div class="card-body">
 			<h2 class="card-title">Privacy preserving</h2>
@@ -26,13 +26,13 @@
 	</div>
 	<br /><br />
 
-	<div class="card card-compact mx-auto w-96 bg-accent text-black">
+	<div class="card card-compact mx-auto w-96 bg-primary text-black">
 		<figure><img src="/attendance.jpg" alt="Shoes" /></figure>
 		<div class="card-body">
 			<h2 class="card-title">Guaranteed Proxy Prevention</h2>
 			<p>
 				Ensures no student gets a proxy attendance by inculcating time limits for entering attendance
-				procedure and scanning the QR cod.e
+				procedure and scanning the QR code
 			</p>
 		</div>
 	</div>
