@@ -11,6 +11,7 @@
 
 	let isOffline = false;
 	let attendanceCompleted = false;
+	let callingEndpoint = false;
 
 	let qrScannerOpened = false;
 	let video: HTMLVideoElement;
@@ -66,11 +67,13 @@
 	}
 
 	async function syncAttendance() {
+		callingEndpoint = true;
 		const response = await fetch(`/api/lectures/${data.lecture._id}/changeStudentStatus`, {
 			method: 'POST',
 			body: JSON.stringify({ studentId: data.student._id, status: 'present' })
 		});
 		if (response.ok) await goto('/student');
+		callingEndpoint = false;
 	}
 
 	let cameras: { id: string; label: string }[] = [];
@@ -121,7 +124,7 @@
 			<video bind:this={video} id="qr-video" autoplay muted playsinline></video>
 		</div>
 		<progress
-			class="progress progress-primary mt-2 w-full mx-2"
+			class="progress progress-primary mx-2 mt-2 w-full"
 			value={scannedArray.length}
 			max="250"
 		></progress>
@@ -139,7 +142,17 @@
 			<span class="text-xl"
 				>You'll be marked {scannedArray.length >= 100 ? 'present' : 'absent'}</span
 			>
-			<button class="btn btn-primary btn-block" on:click={syncAttendance}>Sync attendance</button>
+			<button
+				class="btn btn-primary btn-block"
+				on:click={syncAttendance}
+				disabled={callingEndpoint}
+			>
+				{#if !callingEndpoint}
+					Sync attendance
+				{:else}
+					<span class="loading loading-spinner"></span>
+				{/if}
+			</button>
 		{/if}
 	</div>
 {/if}
