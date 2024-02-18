@@ -17,7 +17,7 @@
 	let video: HTMLVideoElement;
 	let scanner: QrScanner | undefined;
 	let scannedText: string = 'No QR code detected';
-	let scannedArray: string[] = [];
+	let scannedArray: Set<string> = new Set();
 	async function openQrScanner() {
 		try {
 			qrScannerOpened = true;
@@ -29,10 +29,10 @@
 				(result: { data: string }) => {
 					scannedText = result.data;
 					if (
-						result.data === isMarkingAttendance.uuidToMatch &&
+						isMarkingAttendance.uuidToMatch.includes(result.data) &&
 						Number(new Date()) < isMarkingAttendance.startTimestamp + 1000 * 10
 					) {
-						scannedArray.push(result.data);
+						scannedArray.add(result.data);
 						scannedArray = scannedArray;
 					}
 				},
@@ -125,22 +125,22 @@
 		</div>
 		<progress
 			class="progress progress-primary mx-2 mt-2 w-full"
-			value={scannedArray.length}
-			max="250"
+			value={scannedArray.size}
+			max="10"
 		></progress>
 	</div>
 {:else}
 	<div class="flex grow flex-col items-center justify-center gap-4">
 		{#if isOffline}
 			<span class="text-center text-3xl font-bold text-primary">You can now go online!</span>
-			{#if scannedArray.length >= 100}
+			{#if scannedArray.size >= 8}
 				<span class="text-xl text-accent">Go online to add your attendance</span>
 			{:else}
 				<span class="text-xl text-error">You've been marked absent</span>
 			{/if}
-		{:else if scannedArray.length >= 100}
+		{:else if scannedArray.size >= 8}
 			<span class="text-xl"
-				>You'll be marked {scannedArray.length >= 100 ? 'present' : 'absent'}</span
+				>You'll be marked {scannedArray.size >= 8 ? 'present' : 'absent'}</span
 			>
 			<button
 				class="btn btn-primary btn-block"

@@ -30,16 +30,25 @@
 		await goto(`/teacher/assigned_lectures/${data.lecture._id}`);
 	}
 
-	let qrCodeData = '';
+	let qrCodeUUIDs: string[] = [];
 	let svg = '';
 	let qrClosed = false;
+	let displayingQrIdx = 0;
 
-	$: if (data.lecture.isMarkingAttendance && !qrClosed) {
-		qrCodeData = data.lecture.isMarkingAttendance.uuidToMatch;
+	$: if (data.lecture.isMarkingAttendance && !qrClosed && durationLeft === 0) {
+		qrCodeUUIDs = data.lecture.isMarkingAttendance.uuidToMatch;
+		generateQR();
+	}
+
+	function generateQR() {
 		const qr = QRCode(0, 'M');
-		qr.addData(qrCodeData);
+		qr.addData(qrCodeUUIDs[displayingQrIdx]);
 		qr.make();
 		svg = qr.createSvgTag({ scalable: true });
+		if (displayingQrIdx < 9) {
+			displayingQrIdx++;
+			setTimeout(generateQR, 1000);
+		}
 	}
 
 	const lectureStudents = data.lecture.students.map((lectureStudent) => {

@@ -18,7 +18,7 @@ type TeacherClass = {
 type isMarkingAttendanceObject = {
 	studentStatuses: { studentId: string; status: 'not ready' | 'ready' | 'present' }[];
 	startTimestamp: EpochTimeStamp;
-	uuidToMatch: string;
+	uuidToMatch: string[];
 };
 
 type Lecture = {

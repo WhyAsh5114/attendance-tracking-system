@@ -24,7 +24,7 @@ export const POST = async ({ request, locals, params }) => {
 					return { studentId: s, status: 'not ready' };
 				}),
 				startTimestamp: Number(new Date()) + 1000 * 30,
-				uuidToMatch: crypto.randomUUID()
+				uuidToMatch: Array.from({ length: 10 }, () => crypto.randomUUID())
 			};
 		}
 		await client
