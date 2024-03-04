@@ -1,6 +1,7 @@
 # QR-Based Attendance System
 
-![QR-Based Attendance System](https://yourdomain.com/path/to/image.png)
+![image](https://github.com/WhyAsh5114/attendance-tracking-system/assets/71895020/70dff8af-632a-4b6a-bfe2-5996b215186c)
+
 
 A web-based attendance system utilizing QR codes for seamless tracking of student or attendee presence. This application is built with Svelte for the frontend, TypeScript for type safety, and MongoDB for data storage.
 
@@ -67,6 +68,4 @@ A web-based attendance system utilizing QR codes for seamless tracking of studen
 1. **Administrator Dashboard**: Log in as an administrator to generate QR codes, view attendance reports, and manage settings.
 2. **Student/Attendee Interface**: Scan QR codes with a mobile device to register attendance.
 
-## Contributing
-
-Contributions are welcome! Please feel free to submit pull requests or open issues for any bugs, feature requests, or improvements.
+![image](https://github.com/WhyAsh5114/attendance-tracking-system/assets/71895020/43384af5-ece1-47b0-91a0-97b737c119a0)
